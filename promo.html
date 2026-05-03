@@ -20,28 +20,28 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0e17;font-family:
 }
 .slide.active{opacity:1;visibility:visible;z-index:2;will-change:transform}
 
-/* ===== Particles (GPU only) ===== */
+/* ===== Particles ===== */
 .particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .particle{
-  position:absolute;width:2px;height:2px;
-  background:#7EC8E3;border-radius:50%;
+  position:absolute;border-radius:50%;
   opacity:0;will-change:transform,opacity;
+  background: radial-gradient(circle at center, rgba(126,200,227,.8), rgba(126,200,227,0));
 }
 @keyframes rise{
-  0%{transform:translateY(100vh);opacity:0}
-  8%{opacity:.5}
-  92%{opacity:.5}
-  100%{transform:translateY(-5vh);opacity:0}
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.6}
+  85%{opacity:.6}
+  100%{transform:translateY(-5vh) scale(1);opacity:0}
 }
 
-/* ===== Progress Bar (CSS Transition) ===== */
+/* ===== Progress Bar ===== */
 .progress-bar{position:fixed;bottom:0;left:0;z-index:100;width:100%;height:3px;background:rgba(126,200,227,.12)}
 .progress-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#7EC8E3,#B8E6F5);border-radius:0 2px 2px 0}
 
 /* ===== Typography ===== */
 h1{
   font-family:'Orbitron',sans-serif;font-size:clamp(40px,4.5vw,68px);font-weight:900;
-  background:linear-gradient(135deg,#7EC8E3 0%,#B8E6F5 50%,#7EC8E3 100%);
+  background:linear-gradient(135deg,#7EC8E3 0%,#B8E6F5 40%,#7EC8E3 80%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 h2{
@@ -68,13 +68,33 @@ h2{
 .video-wrap{
   position:relative;border-radius:14px;overflow:hidden;
   background:#000;flex-shrink:0;
-  border:1px solid rgba(126,200,227,.15);
-  box-shadow:0 8px 40px rgba(0,0,0,.4);
+  border:1px solid rgba(126,200,227,.2);
+  box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 80px rgba(126,200,227,.06),inset 0 0 40px rgba(126,200,227,.03);
 }
 .video-wrap video{width:100%;height:100%;display:block;object-fit:cover}
 .video-wrap-landscape{aspect-ratio:16/9;width:100%;max-width:960px}
 
-/* ===== Slide 1 ===== */
+/* ===== Entrance Animations (GPU-only) ===== */
+@keyframes fadeIn{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+@keyframes fadeSlide{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeInUp{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeInLeft{0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes fadeInRight{0%{opacity:0;transform:translateX(40px)}100%{opacity:1;transform:translateX(0)}}
+
+.slide.active .fade-in{animation:fadeIn .6s ease-out both}
+.slide.active .fade-in-up{animation:fadeInUp .5s ease-out both}
+.slide.active .fade-in-left{animation:fadeInLeft .5s ease-out both}
+.slide.active .fade-in-right{animation:fadeInRight .5s ease-out both}
+.slide.active .fade-slide{animation:fadeSlide .5s ease-out both}
+
+.delay-1{animation-delay:.1s!important}
+.delay-2{animation-delay:.2s!important}
+.delay-3{animation-delay:.3s!important}
+.delay-4{animation-delay:.4s!important}
+.delay-5{animation-delay:.5s!important}
+.delay-6{animation-delay:.6s!important}
+
+/* ===== Slide 1: Logo ===== */
 .slide-1{flex-direction:column;text-align:center}
 .slide-1 .logo-img{
   width:clamp(100px,13vw,200px);height:auto;margin-bottom:24px;
@@ -89,23 +109,25 @@ h2{
 }
 .slide-1 .version-tag{position:absolute;bottom:28px;font-size:12px;color:#4a5a6a;font-family:'Orbitron',sans-serif;letter-spacing:2px}
 
-/* ===== Slide 4 ===== */
+/* ===== Slide 4: Modes ===== */
 .slide-4{flex-direction:column;text-align:center;gap:20px}
 .slide-4 .mode-row{display:flex;gap:14px;width:100%;justify-content:center}
 .mode-card{
   flex:0 0 175px;padding:18px 12px;
-  background:rgba(126,200,227,.05);
-  border:1px solid rgba(126,200,227,.1);
-  border-radius:12px;
-  will-change:transform;
+  background:linear-gradient(135deg,rgba(126,200,227,.06),rgba(126,200,227,.02));
+  border:1px solid rgba(126,200,227,.12);
+  border-radius:12px;position:relative;overflow:hidden;
 }
-.slide-4.active .mode-card{animation:fadeSlide .5s ease-out both}
+.mode-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(126,200,227,.3),transparent);
+}
+.slide-4.active .mode-card{animation:fadeInUp .5s ease-out both}
 .slide-4.active .mode-card:nth-child(1){animation-delay:.05s}
 .slide-4.active .mode-card:nth-child(2){animation-delay:.15s}
 .slide-4.active .mode-card:nth-child(3){animation-delay:.25s}
 .slide-4.active .mode-card:nth-child(4){animation-delay:.35s}
-@keyframes fadeSlide{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
-.mode-card .mode-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:#7EC8E3}
+.mode-card .mode-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:#7EC8E3;position:relative}
 .mode-card .mode-desc{font-size:12px;color:#8a9aaa;margin-top:5px;line-height:1.4}
 .mode-card .mode-tag{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:600}
 .tag-safe{background:rgba(100,200,100,.15);color:#64c864}
@@ -114,7 +136,7 @@ h2{
 .tag-plan{background:rgba(180,140,255,.15);color:#b48cff}
 .slide-4 .video-wrap{width:clamp(360px,45vw,600px)}
 
-/* ===== Slide 5 ===== */
+/* ===== Slide 5: Providers ===== */
 .slide-5{flex-direction:column;text-align:center}
 .provider-grid{display:flex;gap:18px;margin-top:28px;flex-wrap:wrap;justify-content:center}
 .provider-item{
@@ -122,6 +144,7 @@ h2{
   background:rgba(126,200,227,.05);
   border:1px solid rgba(126,200,227,.08);
   border-radius:12px;text-align:center;
+  transition:border-color .3s,box-shadow .3s;
 }
 .slide-5.active .provider-item{animation:fadeSlide .4s ease-out both}
 .slide-5.active .provider-item:nth-child(1){animation-delay:.05s}
@@ -133,7 +156,7 @@ h2{
 .provider-item .provider-name{font-size:14px;font-weight:600;color:#e0e8f0}
 .provider-item .provider-desc{font-size:11px;color:#7a8a9a;margin-top:3px}
 
-/* ===== Slide 6 ===== */
+/* ===== Slide 6: Search ===== */
 .slide-6 .split-layout{justify-content:space-between}
 .slide-6 .video-wrap{flex:0 0 45%}
 .search-preset-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
@@ -151,16 +174,20 @@ h2{
 .slide-6.active .preset-tag:nth-child(6){animation-delay:.17s}
 .slide-6.active .preset-tag:nth-child(7){animation-delay:.2s}
 
-/* ===== Slide 7 ===== */
+/* ===== Slide 7: Skills ===== */
 .slide-7{flex-direction:column;text-align:center}
 .skill-showcase{display:flex;gap:20px;margin-top:28px}
 .skill-type{
   flex:1;padding:24px 18px;
   background:rgba(126,200,227,.04);
   border:1px solid rgba(126,200,227,.07);
-  border-radius:16px;
+  border-radius:16px;position:relative;overflow:hidden;
 }
-.slide-7.active .skill-type{animation:fadeSlide .5s ease-out both}
+.skill-type::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(126,200,227,.25),transparent);
+}
+.slide-7.active .skill-type{animation:fadeInUp .5s ease-out both}
 .slide-7.active .skill-type:nth-child(1){animation-delay:.05s}
 .slide-7.active .skill-type:nth-child(2){animation-delay:.18s}
 .slide-7.active .skill-type:nth-child(3){animation-delay:.31s}
@@ -168,7 +195,7 @@ h2{
 .skill-type .skill-title{font-size:16px;font-weight:700;color:#7EC8E3}
 .skill-type .skill-desc{font-size:13px;color:#8a9aaa;margin-top:5px;line-height:1.4}
 
-/* ===== Slide 8 ===== */
+/* ===== Slide 8: Memory ===== */
 .slide-8{flex-direction:column;text-align:center}
 .memory-demo{margin-top:24px;width:100%;max-width:660px}
 .memory-item{
@@ -189,7 +216,7 @@ h2{
 .memory-item .mem-text{font-size:14px;color:#c0d0e0;flex:1;text-align:left}
 .memory-item .mem-icon{font-size:16px}
 
-/* ===== Slide 9 ===== */
+/* ===== Slide 9: Confirmation ===== */
 .slide-9 .split-layout{justify-content:space-between}
 .slide-9 .video-wrap{flex:0 0 45%}
 .confirm-example{
@@ -203,7 +230,7 @@ h2{
 .confirm-example .yes{color:#64c864}
 .confirm-example .no{color:#ff7850}
 
-/* ===== Slide 10 ===== */
+/* ===== Slide 10: Anti-loop ===== */
 .slide-10{flex-direction:column;text-align:center}
 .anti-loop-visual{display:flex;align-items:center;gap:14px;margin-top:24px}
 .loop-item{
@@ -222,7 +249,7 @@ h2{
 .slide-10.active .loop-shield{animation:fadeSlide .4s ease-out .3s both}
 .loop-shield span{font-size:32px}
 
-/* ===== Slide 11 ===== */
+/* ===== Slide 11: Status ===== */
 .slide-11{flex-direction:column;text-align:center}
 .status-demo{margin-top:28px;width:100%;max-width:580px}
 .status-bar-demo{
@@ -253,7 +280,7 @@ h2{
 @keyframes typing{to{width:100%}}
 @keyframes blink{50%{border-color:transparent}}
 
-/* ===== Slide 12 ===== */
+/* ===== Slide 12: End ===== */
 .slide-12{flex-direction:column;text-align:center}
 .slide-12 h1{font-size:clamp(32px,3.2vw,50px)}
 .slide-12 .end-url{
@@ -269,14 +296,6 @@ h2{
   font-size:12px;font-weight:600;
   border:1px solid rgba(126,200,227,.09);color:#7EC8E3;
 }
-
-/* ===== Entrance ===== */
-@keyframes fadeIn{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
-.slide.active .fade-in{animation:fadeIn .6s ease-out both}
-.delay-1{animation-delay:.1s!important}
-.delay-2{animation-delay:.2s!important}
-.delay-3{animation-delay:.3s!important}
-.delay-4{animation-delay:.4s!important}
 
 /* ===== Responsive ===== */
 @media(max-width:900px){
@@ -308,16 +327,16 @@ h2{
   <div class="slide slide-2" data-index="1">
     <div class="split-layout">
       <div class="split-left text-content">
-        <h2 class="fade-in">管理服务器有多头疼？</h2>
-        <ul class="feature-list fade-in delay-1">
+        <h2 class="fade-in-left">管理服务器有多头疼？</h2>
+        <ul class="feature-list fade-in-left delay-2">
           <li>翻半天 Wiki 才能找到一条指令</li>
           <li>背指令背到怀疑人生</li>
           <li>每次调权限都要查文档</li>
           <li>装个新插件又得重新学</li>
         </ul>
-        <p class="subtitle" style="margin-top:14px;font-size:clamp(14px,1.1vw,17px);color:#7EC8E3;">如果...这些都能用一句话解决呢？</p>
+        <p class="subtitle fade-in-left delay-4" style="margin-top:14px;font-size:clamp(14px,1.1vw,17px);color:#7EC8E3;">如果...这些都能用一句话解决呢？</p>
       </div>
-      <div class="video-wrap video-wrap-landscape fade-in delay-1">
+      <div class="video-wrap video-wrap-landscape fade-in-right delay-3">
         <video src="1.mp4" muted playsinline preload="none" data-slide="1"></video>
       </div>
     </div>
@@ -326,28 +345,28 @@ h2{
   <!-- SLIDE 3: Chat -->
   <div class="slide slide-3" data-index="2">
     <div class="split-layout">
-      <div class="video-wrap video-wrap-landscape fade-in delay-1">
+      <div class="video-wrap video-wrap-landscape fade-in-left delay-2">
         <video src="2.mp4" muted playsinline preload="none" data-slide="2"></video>
       </div>
       <div class="split-right text-content">
-        <h2 class="fade-in">像聊天一样管理服务器</h2>
-        <ul class="feature-list fade-in delay-1">
+        <h2 class="fade-in-right">像聊天一样管理服务器</h2>
+        <ul class="feature-list fade-in-right delay-3">
           <li>输入 <span class="highlight">/cli</span> 进入对话模式</li>
           <li>说人话，AI 帮你生成指令</li>
           <li>确认后执行，不用背任何命令</li>
           <li>把 <span class="highlight">baicaizhale</span> 设成管理员</li>
           <li>在当前位置生成石头平台</li>
         </ul>
-        <p class="subtitle" style="margin-top:10px;font-size:12px;color:#6b7b8b;">支持 <span class="highlight">exit</span> 退出 · <span class="highlight">stop</span> 打断 · <span class="highlight">/cli retry</span> 重试</p>
+        <p class="subtitle fade-in-right delay-5" style="margin-top:10px;font-size:12px;color:#6b7b8b;">支持 <span class="highlight">exit</span> 退出 · <span class="highlight">stop</span> 打断 · <span class="highlight">/cli retry</span> 重试</p>
       </div>
     </div>
   </div>
 
   <!-- SLIDE 4: Modes -->
   <div class="slide slide-4" data-index="3">
-    <h2 class="fade-in" style="margin-bottom:4px;">四种模式，应对所有场景</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">按需选择，从全手动到全自动</p>
-    <div class="mode-row fade-in delay-2">
+    <h2 class="fade-in-up" style="margin-bottom:4px;">四种模式，应对所有场景</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">按需选择，从全手动到全自动</p>
+    <div class="mode-row fade-in-up delay-2">
       <div class="mode-card">
         <div class="mode-name">NORMAL</div>
         <div class="mode-desc">每条命令手动确认<br>完全掌控</div>
@@ -369,16 +388,16 @@ h2{
         <span class="mode-tag tag-plan">仅规划</span>
       </div>
     </div>
-    <div class="video-wrap video-wrap-landscape fade-in delay-3" style="max-width:560px;">
+    <div class="video-wrap video-wrap-landscape fade-in-up delay-4" style="max-width:560px;">
       <video src="3.mp4" muted playsinline preload="none" data-slide="3"></video>
     </div>
   </div>
 
   <!-- SLIDE 5: AI Providers -->
   <div class="slide slide-5" data-index="4">
-    <h2 class="fade-in">自由选择 AI 引擎</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">不绑死一家，想用哪个用哪个</p>
-    <div class="provider-grid">
+    <h2 class="fade-in-up">自由选择 AI 引擎</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">不绑死一家，想用哪个用哪个</p>
+    <div class="provider-grid fade-in-up delay-2">
       <div class="provider-item">
         <img class="provider-img" src="CloudFlare.png" alt="CloudFlare">
         <div class="provider-name">CloudFlare</div>
@@ -411,14 +430,14 @@ h2{
   <div class="slide slide-6" data-index="5">
     <div class="split-layout">
       <div class="split-left text-content">
-        <h2 class="fade-in">内置智能搜索</h2>
-        <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">找文档？AI 帮你搞定</p>
-        <ul class="feature-list fade-in delay-2">
+        <h2 class="fade-in-left">内置智能搜索</h2>
+        <p class="subtitle fade-in-left delay-1" style="font-size:clamp(12px,1vw,16px);">找文档？AI 帮你搞定</p>
+        <ul class="feature-list fade-in-left delay-2">
           <li>Tavily + Metaso 全网搜索</li>
           <li>热门插件文档预设</li>
           <li>搜不到自动联网找</li>
         </ul>
-        <div class="search-preset-list fade-in delay-3">
+        <div class="search-preset-list fade-in-left delay-3">
           <span class="preset-tag">LuckPerms</span>
           <span class="preset-tag">EssentialsX</span>
           <span class="preset-tag">WorldEdit</span>
@@ -428,7 +447,7 @@ h2{
           <span class="preset-tag">更多...</span>
         </div>
       </div>
-      <div class="video-wrap video-wrap-landscape fade-in delay-2" style="max-width:600px;">
+      <div class="video-wrap video-wrap-landscape fade-in-right delay-2" style="max-width:600px;">
         <video src="4.mp4" muted playsinline preload="none" data-slide="5"></video>
       </div>
     </div>
@@ -436,9 +455,9 @@ h2{
 
   <!-- SLIDE 7: Skills -->
   <div class="slide slide-7" data-index="6">
-    <h2 class="fade-in">Skill 生态 — 无限扩展</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">为 AI 注入特定领域的知识和技能</p>
-    <div class="skill-showcase fade-in delay-2">
+    <h2 class="fade-in-up">Skill 生态 — 无限扩展</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">为 AI 注入特定领域的知识和技能</p>
+    <div class="skill-showcase fade-in-up delay-2">
       <div class="skill-type">
         <span class="skill-icon">📦</span>
         <div class="skill-title">内置 Skill</div>
@@ -459,9 +478,9 @@ h2{
 
   <!-- SLIDE 8: Memory -->
   <div class="slide slide-8" data-index="7">
-    <h2 class="fade-in">AI 会记住你的偏好</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">持久化记忆，越用越顺手</p>
-    <div class="memory-demo fade-in delay-2">
+    <h2 class="fade-in-up">AI 会记住你的偏好</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">持久化记忆，越用越顺手</p>
+    <div class="memory-demo fade-in-up delay-2">
       <div class="memory-item">
         <span class="mem-icon">🧠</span>
         <span class="mem-cat">偏好</span>
@@ -483,17 +502,17 @@ h2{
   <!-- SLIDE 9: Confirmation -->
   <div class="slide slide-9" data-index="8">
     <div class="split-layout">
-      <div class="video-wrap video-wrap-landscape fade-in" style="max-width:600px;">
+      <div class="video-wrap video-wrap-landscape fade-in-left delay-2" style="max-width:600px;">
         <video src="5.mp4" muted playsinline preload="none" data-slide="8"></video>
       </div>
       <div class="split-right text-content">
-        <h2 class="fade-in">安全，但不过度</h2>
-        <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">NORMAL 全程确认 · YOLO 只拦高危</p>
-        <div class="confirm-example fade-in delay-2">
+        <h2 class="fade-in-right">安全，但不过度</h2>
+        <p class="subtitle fade-in-right delay-1" style="font-size:clamp(12px,1vw,16px);">NORMAL 全程确认 · YOLO 只拦高危</p>
+        <div class="confirm-example fade-in-right delay-3">
           <div class="cmd">/op baicaizhale</div>
           <div class="prompt">确认执行吗？ <span class="yes">[Y]</span> <span class="no">[N]</span></div>
         </div>
-        <ul class="feature-list fade-in delay-3">
+        <ul class="feature-list fade-in-right delay-4">
           <li><span class="highlight">op</span> · <span class="highlight">ban</span> · <span class="highlight">stop</span> 始终确认</li>
           <li>普通命令 YOLO 自动执行</li>
           <li>SMART 模式 AI 智能判断风险</li>
@@ -504,9 +523,9 @@ h2{
 
   <!-- SLIDE 10: Anti-loop -->
   <div class="slide slide-10" data-index="9">
-    <h2 class="fade-in">智能防护，杜绝死循环</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">AI 也会犯错，FancyHelper 兜底</p>
-    <div class="anti-loop-visual fade-in delay-2">
+    <h2 class="fade-in-up">智能防护，杜绝死循环</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">AI 也会犯错，FancyHelper 兜底</p>
+    <div class="anti-loop-visual fade-in-up delay-2">
       <div class="loop-item">set 石头</div>
       <span class="loop-arrow">→</span>
       <div class="loop-item">set 石头</div>
@@ -515,45 +534,45 @@ h2{
       <span class="loop-arrow">→</span>
       <div class="loop-item" style="border-color:#ff7850;">set 石头 ✕</div>
     </div>
-    <div class="loop-shield fade-in delay-3"><span>🛡️</span></div>
-    <p class="subtitle" style="margin-top:14px;font-size:13px;color:#7EC8E3;">
+    <div class="loop-shield fade-in-up delay-3"><span>🛡️</span></div>
+    <p class="subtitle fade-in-up delay-4" style="margin-top:14px;font-size:13px;color:#7EC8E3;">
       连续相似调用自动拦截 · 执行结果回传 · 错了自己改
     </p>
   </div>
 
-  <!-- SLIDE 11: Status Bar -->
+  <!-- SLIDE 11: Status -->
   <div class="slide slide-11" data-index="10">
-    <h2 class="fade-in">实时状态，一目了然</h2>
-    <p class="subtitle fade-in delay-1" style="font-size:clamp(12px,1vw,16px);">AI 在做什么，随时可见</p>
+    <h2 class="fade-in-up">实时状态，一目了然</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(12px,1vw,16px);">AI 在做什么，随时可见</p>
     <div class="status-demo">
-      <div class="status-bar-demo fade-in delay-2">
+      <div class="status-bar-demo fade-in-left delay-2">
         <span class="status-dot"></span>
         <span class="status-text">Fancy 正在思考...</span>
         <span class="status-sub">| 已思考 2.3s</span>
       </div>
-      <div class="status-bar-demo fade-in delay-2" style="margin-top:8px;border-color:rgba(100,200,100,.12)">
+      <div class="status-bar-demo fade-in-left delay-3" style="margin-top:8px;border-color:rgba(100,200,100,.12)">
         <span class="status-dot" style="background:#64c864"></span>
         <span class="status-text" style="color:#64c864">Fancy 正在执行命令...</span>
         <span class="status-sub">| /op baicaizhale</span>
       </div>
-      <div class="status-bar-demo fade-in delay-2" style="margin-top:8px;border-color:rgba(255,200,50,.12)">
+      <div class="status-bar-demo fade-in-left delay-4" style="margin-top:8px;border-color:rgba(255,200,50,.12)">
         <span class="status-dot" style="background:#ffc832"></span>
         <span class="status-text" style="color:#ffc832">等待你的确认...</span>
         <span class="status-sub">| [Y] / [N]</span>
       </div>
-      <div class="typing-demo fade-in delay-3">
+      <div class="typing-demo fade-in-left delay-5">
         <div class="typing-line">好的，Fancy 已经帮你设置好了。</div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 12: Ending -->
+  <!-- SLIDE 12: End -->
   <div class="slide slide-12" data-index="11">
-    <h2 class="fade-in">FancyHelper</h2>
-    <p class="subtitle" style="font-size:clamp(18px,1.6vw,26px);">用说人话的方式管理你的 Minecraft 服务器</p>
-    <div class="end-url fade-in delay-2">fancy.baicaizhale.top</div>
-    <p class="subtitle" style="margin-top:20px;font-size:13px;color:#5a6a7a;">下载 · 安装 · 开用</p>
-    <div class="end-modes fade-in delay-3">
+    <h2 class="fade-in-up">FancyHelper</h2>
+    <p class="subtitle fade-in-up delay-1" style="font-size:clamp(18px,1.6vw,26px);">用说人话的方式管理你的 Minecraft 服务器</p>
+    <div class="end-url fade-in-up delay-2">fancy.baicaizhale.top</div>
+    <p class="subtitle fade-in-up delay-3" style="margin-top:20px;font-size:13px;color:#5a6a7a;">下载 · 安装 · 开用</p>
+    <div class="end-modes fade-in-up delay-4">
       <span>Spigot 1.18+</span>
       <span>Paper 1.18+</span>
       <span>Java 17</span>
@@ -569,13 +588,14 @@ h2{
 // ===== Particles (GPU-optimized) =====
 (function(){
   const c=document.getElementById('particles');
-  for(let i=0;i<15;i++){
+  for(let i=0;i<30;i++){
     const p=document.createElement('div');
     p.className='particle';
+    const size=1.5+Math.random()*3;
     p.style.left=Math.random()*100+'%';
-    p.style.width=p.style.height=(1+Math.random()*2)+'px';
-    p.style.animation='rise '+(12+Math.random()*18)+'s '+(Math.random()*15)+'s linear infinite';
-    p.style.opacity=.3+Math.random()*.5;
+    p.style.width=p.style.height=size+'px';
+    p.style.animation='rise '+(14+Math.random()*22)+'s '+(Math.random()*18)+'s linear infinite';
+    p.style.opacity=.2+Math.random()*.5;
     c.appendChild(p);
   }
 })();
@@ -596,7 +616,6 @@ function getVideo(idx){
 }
 
 function goToSlide(idx){
-  // Stop current video
   const oldV=getVideo(cur);
   if(oldV){oldV.pause();oldV.currentTime=0;oldV.onended=null}
 
@@ -605,10 +624,9 @@ function goToSlide(idx){
   cur=idx;
   clearTimeout(slideTimer);
 
-  // Reset then animate progress bar via CSS transition
   pf.style.transition='none';
   pf.style.width='0%';
-  pf.offsetHeight; // force reflow
+  pf.offsetHeight;
 
   if(videoSlides.includes(idx)){
     const v=getVideo(idx);
@@ -616,7 +634,6 @@ function goToSlide(idx){
       v.load();
       const playPromise=v.play();
       if(playPromise)playPromise.catch(()=>{});
-      // CSS transition matches video duration
       const dur=isFinite(v.duration)? v.duration*1000 : durations[idx];
       v.onloadedmetadata=()=>{
         pf.style.transition='width '+v.duration+'s linear';
@@ -624,14 +641,12 @@ function goToSlide(idx){
       };
       v.onended=()=>setTimeout(nextSlide,Math.max(0,minTime-(Date.now()-slideStart)));
       slideTimer=setTimeout(nextSlide,durations[idx]);
-      // If metadata already loaded
       if(v.readyState>=1){
         pf.style.transition='width '+v.duration+'s linear';
         pf.style.width='100%';
       }
     }
   }else{
-    // No video: CSS transition over fixed duration
     pf.style.transition='width '+durations[idx]/1000+'s linear';
     pf.style.width='100%';
     slideTimer=setTimeout(nextSlide,durations[idx]);
@@ -650,7 +665,6 @@ let slideStart=0;
 
 function nextSlide(){if(playing)goToSlide((cur+1)%total)}
 
-// Click / keyboard
 document.addEventListener('click',()=>{if(playing)nextSlide()});
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();if(playing)nextSlide()}
